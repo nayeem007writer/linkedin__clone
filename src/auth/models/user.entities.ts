@@ -1,10 +1,10 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Role } from "./role.entities";
 import { FeedPostEntity } from "src/feed/models/post.entities";
 
 
 @Entity()
-export class UserEntity {
+export class UserEntity extends BaseEntity{
     @PrimaryGeneratedColumn()
     id: number;
 

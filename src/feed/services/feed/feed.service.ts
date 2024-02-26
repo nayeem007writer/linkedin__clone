@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Observable, Observer, catchError, from, map, throwError } from 'rxjs';
+import { User } from 'src/auth/models/user.interface';
 import { FeedPostEntity } from 'src/feed/models/post.entities';
 import { FeedPost } from 'src/feed/models/post.interface';
 
@@ -14,12 +15,13 @@ export class FeedService {
     ) {}
 
 
-    createPost(post: FeedPost): Observable<FeedPostEntity> {
+    createPost(user: User,post: FeedPost): Observable<FeedPostEntity> {
         const { id, body, createdAt } = post;
-
+        const author = user;
         const newPostEntity = this.feeddrepo.create({
             body,
             createdAt,
+            author
         });
 
         return from(this.feeddrepo.save(newPostEntity)).pipe(

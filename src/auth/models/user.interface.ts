@@ -10,3 +10,8 @@ export interface User {
     role?: Role;
     posts?: FeedPost[];
 }
+
+export interface LogIn{
+    email: string;
+    password: string;
+}

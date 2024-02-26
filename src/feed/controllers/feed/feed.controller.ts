@@ -1,6 +1,7 @@
-import { Body, Controller, Query,Get, Param, Post, Put, Delete } from '@nestjs/common';
+import { Body, Controller, Query,Get, Param, Request,Post, Put, Delete, UseGuards } from '@nestjs/common';
 import { query } from 'express';
 import { Observable, from } from 'rxjs';
+import { JwtGuard } from 'src/auth/guards/jwt.guard';
 import { FeedPost } from 'src/feed/models/post.interface';
 import { FeedService } from 'src/feed/services/feed/feed.service';
 import { DeleteResult, UpdateResult } from 'typeorm';
@@ -8,10 +9,10 @@ import { DeleteResult, UpdateResult } from 'typeorm';
 @Controller('feed')
 export class FeedController {
     constructor(private feedService: FeedService) {}
-
+    @UseGuards(JwtGuard)
     @Post()
-    create(@Body() feedpost: FeedPost): Observable<any> {
-        return this.feedService.createPost(feedpost);
+    create(@Body() feedpost: FeedPost, @Request() req): Observable<any> {
+        return this.feedService.createPost(req.user,feedpost);
     }
 
 
