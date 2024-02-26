@@ -1,4 +1,5 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { UserEntity } from "src/auth/models/user.entities";
+import { BaseEntity, Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 
 @Entity('feed_post')
@@ -11,4 +12,8 @@ export class FeedPostEntity extends BaseEntity{
 
     @Column({ type: 'timestamp',default: () => 'CURRENT_TIMESTAMP' })
     createdAt: Date;
+
+
+    @ManyToOne(() => UserEntity, (userEntity) => userEntity.feedPosts)
+    author: UserEntity;
 }

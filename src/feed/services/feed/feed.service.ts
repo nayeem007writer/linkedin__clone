@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Observable, catchError, from, map, throwError } from 'rxjs';
+import { Observable, Observer, catchError, from, map, throwError } from 'rxjs';
 import { FeedPostEntity } from 'src/feed/models/post.entities';
 import { FeedPost } from 'src/feed/models/post.interface';
 
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 
 @Injectable()
 export class FeedService {
@@ -30,9 +30,25 @@ export class FeedService {
         );
     }
 
+    findPosts(take: number = 2, skip: number = 1): Observable<FeedPost[]> {
+        return from(this.feeddrepo.findAndCount({ take, skip })).pipe(
+            map(([posts]) => <FeedPost[]><unknown>posts)
+        );
+    }
+
     findAllPosts(): Observable<any[]> {
      return from(this.feeddrepo.find());
     }
+
+    updatePost(id: number, feedPost: FeedPost): Observable<UpdateResult> {
+        const {body} =feedPost;
+       return from(this.feeddrepo.update(id,{body}));
+    }
+    
+    deletePost(id:number): Observable<DeleteResult> {
+        return from(this.feeddrepo.delete(id));
+    }
+
 
 }
 
