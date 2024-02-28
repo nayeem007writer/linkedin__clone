@@ -5,7 +5,7 @@ import { BaseEntity, Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColum
 @Entity('feed_post')
 export class FeedPostEntity extends BaseEntity{
     @PrimaryGeneratedColumn()
-    id: string;
+    id: number;
 
     @Column()
     body: string;
