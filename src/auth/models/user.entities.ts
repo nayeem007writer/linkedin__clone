@@ -21,7 +21,10 @@ export class UserEntity extends BaseEntity{
     @Column({ select: false})
     password: string;
 
-    @Column({type: 'enum', enum: Role,default: Role.ADMIN})
+    @Column({ nullable: true})
+    imagePath: string;
+
+    @Column({type: 'enum', enum: Role, default: Role.ADMIN})
     role: Role;
 
     @OneToMany(()=> FeedPostEntity,(feedPost) => feedPost.author)

@@ -14,7 +14,7 @@ import { DeleteResult, UpdateResult } from 'typeorm';
 export class FeedController {
     constructor(private feedService: FeedService) {}
 
-    @Roles(Role.ADMIN,Role.PREMIUM)
+    @Roles(Role.ADMIN,Role.USER)
     @UseGuards(JwtGuard,RolesGuard)
     @Post()
     create(@Body() feedpost: FeedPost, @Request() req): Observable<any> {

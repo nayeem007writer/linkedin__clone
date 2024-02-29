@@ -18,7 +18,7 @@ export class AuthController {
         return this.authService.registerAccount(user);
     }
 
-  
+    @Post('login')
     login(@Body() user: User):Observable<{token: string}> {
         console.log(user);
         return this.authService.login(user)
