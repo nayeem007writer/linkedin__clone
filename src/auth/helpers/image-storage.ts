@@ -2,10 +2,12 @@ import { diskStorage } from "multer";
 import { v4 as uuidV4} from 'uuid';
 
 const fs = require('fs');
-// const fileType = require('file-type');
+const FileType = require('file-type');
 // import {fileTypeFromFile} from 'file-type';
 
 import path = require('path');
+import { Observable,from ,of } from "rxjs";
+import { switchMap } from 'rxjs/operators';
 
 type ValidFileExtension = 'png' | 'jpg' | 'jpeg';
 type ValidMineType = 'image/png' | 'image/jpg' | 'image/jpeg';
@@ -28,3 +30,28 @@ fileFilter: (req, file, cb) =>{
     allowedMineTypes.includes(file.mimetype) ? cb(null,true): cb(null, false);
 }
 };
+
+
+
+export const  isFileExtensionSafe =(fullFilePath: string): Observable<boolean> => {
+    return from(FileType.fromFile(fullFilePath)).pipe(
+        switchMap( (fileExtensionAndMimeType: any)  => {
+
+            if(!fileExtensionAndMimeType) return of(false)
+
+            const isFileTypeLegit = validFileExtension.includes(fileExtensionAndMimeType.ext);
+            const isMimeTypeLegit = validMineType.includes(fileExtensionAndMimeType.mime);
+            
+            const isFileLegit = isFileTypeLegit && isMimeTypeLegit;
+
+            return of(isFileLegit);
+        })
+    )
+}
+export const removeFile = (fullFilePath: string): void => {
+    try {
+      fs.unlinkSync(fullFilePath);
+    } catch (err) {
+      console.error(err);
+    }
+  };
