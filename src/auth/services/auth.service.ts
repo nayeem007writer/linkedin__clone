@@ -45,14 +45,18 @@ export class AuthService {
         select:['id','email','firstName','lastName','password','role']
        })).pipe(
         switchMap((user: User) => 
-            from(bcrypt.compare(password,user.password)).pipe(
+  {          
+            if(!user) {
+                // throw new HttpException({status: HttpStatus.NOT_FOUND, error: 'Invalid Credential'}, HttpStatus.NOT_FOUND);
+            }
+            return from(bcrypt.compare(password,user.password)).pipe(
                 map((isValid: boolean) => {
                     if(isValid) {
                         delete user.password;
                         return user;
                     }
                 })
-            ) 
+            ) }
         )
        )
     }

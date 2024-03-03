@@ -20,7 +20,6 @@ export class AuthController {
 
     @Post('login')
     login(@Body() user: User):Observable<{token: string}> {
-        console.log(user);
         return this.authService.login(user)
         .pipe(map((jwt: string) =>({token: jwt})));
         
