@@ -1,6 +1,7 @@
 import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus } from "@nestjs/common";
 import { CustomHttpExceptionResponse, HttpExceptionResponse } from "./models/http-exception-response.interface";
-
+import * as fs from 'fs';
+import { Request, Response } from "express";
 @Catch()
 export class AllExceptionFilter implements ExceptionFilter {
     catch(exception: any, host: ArgumentsHost) {
@@ -23,6 +24,8 @@ export class AllExceptionFilter implements ExceptionFilter {
 
         const errorResponse = this.getErrorResponse(status, errorMessage, request);
         const errorLog = this.getErrorLog(errorResponse, request, exception);
+        this.writeErrorLogToFile(errorLog);
+        response.status(status).json(errorResponse);
 
     }
 
@@ -49,7 +52,18 @@ export class AllExceptionFilter implements ExceptionFilter {
         ${JSON.stringify(errorResponse)}\n\n
         User: ${JSON.stringify(request.body?? 'Not signed in')}\n\n
         ${exception instanceof HttpException ? exception.stack : error}\n\n`;
+        // let v =chalk.blue(7, errorLog)
         console.log(7, errorLog)
         return errorLog;
+      };  
+
+      private writeErrorLogToFile = (errorLog: string): void => {
+
+        fs.appendFile(`error.log`, errorLog, `utf-8`, (err) =>{
+            if(err) throw err;
+        })
+        // fs.appendFile('error.log', errorLog, 'utf8', (err) => {
+        //   if (err) throw err;
+        // });
       };  
 }
