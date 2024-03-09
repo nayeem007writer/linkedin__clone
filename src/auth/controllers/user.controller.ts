@@ -5,7 +5,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { isFileExtensionSafe, removeFile, saveImageToStorages } from '../helpers/image-storage';
 import { Observable, of, switchMap } from 'rxjs';
 import { join } from 'path';
-import { User } from '../models/user.interface';
+import { User } from '../models/user.class';
 import { FriendRequest, FriendRequestStatus, FriendRequest_Status } from '../models/friend.request.interface';
 
 @Controller('user')

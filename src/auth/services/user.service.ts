@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Observable, from, map, of, switchMap } from 'rxjs';
-import { User } from '../models/user.interface';
+import { User } from '../models/user.class';
 import { UserEntity } from '../models/user.entities';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
